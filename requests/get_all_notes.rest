@@ -1,0 +1,21 @@
+GET  http://localhost:3001/api/notes
+
+###
+
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content":"test",
+    "important":true
+}
+
+###
+
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name":"lelelele",
+    "number":655655565
+}
