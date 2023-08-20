@@ -3,9 +3,12 @@
 const express = require("express")
 const app = express()
 const cors = require("cors")
+const morgan = require("morgan")
 
 app.use(express.json())
 app.use(cors())
+app.use(express.static('build'))
+app.use(morgan("tiny"))
 
 let notes = [
   {
@@ -32,6 +35,7 @@ app.get('/',(request,response)=>{
 
 app.get("/api/notes",(request,response)=>{
   response.json(notes)
+  console.log("get notes, backend log")
 })
 app.get("/api/notes/:id",(request,response)=>{
     const id = Number(request.params.id)
@@ -71,6 +75,7 @@ app.post("/api/notes",(request,response)=>{
     important: body.important || false,
     id : generateId()
   }
+  console.log("added,backend log")
   notes = notes.concat(note)
   response.json(note)
 
@@ -80,7 +85,8 @@ app.delete("/api/notes/:id",(request,response)=>{
   const id = Number(request.params.id)
   notes = notes.filter((note)=>note.id !== id)
   console.log("deleted")
-  // response.status(404).end()
+  response.status(204).end()
+
  })
 
 // app.lister()
