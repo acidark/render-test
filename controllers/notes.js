@@ -53,7 +53,7 @@ notesRouter.get('/:id', async(request,response,next) => {
 //       response.status(201).json(savedNote)
 //     }).catch(error => next(error))
 // })
-notesRouter.post('/',async(request,response,next) => {
+notesRouter.post('/',async(request,response) => {
   const body = request.body
   const note = new Note({
     content:body.content,
