@@ -7,16 +7,14 @@ const helper = require('../tests/test_helper')
 
 beforeEach(async () => {
   await Note.deleteMany({})
-  let noteObject = new Note(helper.initialNotes[0])
-  await noteObject.save()
-  noteObject = new Note(helper.initialNotes[1])
-  await noteObject.save()
+  const noteObjects = helper.initialNotes.map(note => new Note(note))
+  const promisesArray = noteObjects.map(note => note.save())
+  await Promise.all(promisesArray)
 })
 
 test('all notes are returned',async () => {
   const response = await api
     .get('/api/notes')
-  console.log(response)
   expect(response.body).toHaveLength(helper.initialNotes.length)
 })
 
