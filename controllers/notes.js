@@ -59,12 +59,12 @@ notesRouter.post('/',async(request,response,next) => {
     content:body.content,
     important:body.important||false
   })
-  try{
-    const savedNote = await note.save()
-    response.status(201).json(savedNote)
-  } catch(exception) {
-    next(exception)
-  }
+  // try{
+  const savedNote = await note.save()
+  response.status(201).json(savedNote)
+  // } catch(exception) {
+  // next(exception)
+  // }
 })
 
 // notesRouter.delete('/:id',(request,response,next) => {
@@ -75,13 +75,13 @@ notesRouter.post('/',async(request,response,next) => {
 //     }).catch(error => next(error))
 // })
 
-notesRouter.delete('/:id', async (request,response,next) => {
-  try {
-    await Note.findByIdAndRemove(request.params.id)
-    response.status(204).end()
-  } catch (exception) {
-    next(exception)
-  }
+notesRouter.delete('/:id', async (request,response) => {
+  // try {
+  await Note.findByIdAndRemove(request.params.id)
+  response.status(204).end()
+  // } catch (exception) {
+  // next(exception)
+  // }
 })
 
 notesRouter.put('/:id',(request,response,next) => {
