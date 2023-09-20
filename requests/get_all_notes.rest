@@ -33,3 +33,12 @@ Content-Type: application/json
 ###
 
 DELETE http://localhost:3001/api/notes/64e4ceca47f61aebd5466234
+
+###
+POST http://localhost:3001/api/notes
+Content-Type: application/json
+
+{
+    "content":"prua",
+    "important":false
+}
