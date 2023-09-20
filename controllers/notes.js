@@ -28,17 +28,17 @@ notesRouter.get('/',async (request,response) => {
 //     }).catch(error => next(error))
 // })
 
-notesRouter.get('/:id', async(request,response,next) => {
-  try {
-    const note = await Note.findById(request.params.id)
-    if(note) {
-      response.json(note)
-    } else {
-      response.status(404)
-    }
-  } catch (exception) {
-    next(exception)
+notesRouter.get('/:id', async(request,response) => {
+  // try {
+  const note = await Note.findById(request.params.id)
+  if(note) {
+    response.json(note)
+  } else {
+    response.status(404)
   }
+  // } catch (exception) {
+  // next(exception)
+  // }
 })
 
 // notesRouter.post('/',(request,response,next) => {
