@@ -5,11 +5,20 @@ const Note = require('../models/note')
 const api = supertest(app)
 const helper = require('../tests/test_helper')
 
+// beforeEach(async () => {
+//   await Note.deleteMany({})
+//   const noteObjects = helper.initialNotes.map(note => new Note(note))
+//   const promisesArray = noteObjects.map(note => note.save())
+//   // console.log(promisesArray)
+//   await Promise.all(promisesArray)
+// })
+
 beforeEach(async () => {
   await Note.deleteMany({})
-  const noteObjects = helper.initialNotes.map(note => new Note(note))
-  const promisesArray = noteObjects.map(note => note.save())
-  await Promise.all(promisesArray)
+  for (let note of helper.initialNotes) {
+    let noteObject = new Note(note)
+    await noteObject.save()
+  }
 })
 
 test('all notes are returned',async () => {
