@@ -1,18 +1,12 @@
 const notesRouter = require('express').Router()
 const Note = require('../models/note')
-
-// notesRouter.get('/',(request,response) => {
-//   console.log('enter get')
-//   Note
-//     .find({})
-//     .then(notes => {
-//       console.log('enter get')
-//       response.json(notes)
-//     })
-// })
+const User = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 notesRouter.get('/',async (request,response) => {
-  const notes = await Note.find({})
+  const notes = await Note
+    .find({})
+    .populate('user',{ username:1,name:1 })
   response.json(notes)
 })
 
@@ -34,7 +28,7 @@ notesRouter.get('/:id', async(request,response) => {
   if(note) {
     response.json(note)
   } else {
-    response.status(404)
+    response.status(404).end()
   }
   // } catch (exception) {
   // next(exception)
@@ -53,14 +47,32 @@ notesRouter.get('/:id', async(request,response) => {
 //       response.status(201).json(savedNote)
 //     }).catch(error => next(error))
 // })
+const getTokenFrom = request => {
+  let authorization = request.get('authorization')
+  if(authorization && authorization.starsWith('Bearer')) {
+    return authorization = authorization.replace('Bearer','')
+  }
+  return null
+}
 notesRouter.post('/',async(request,response) => {
+  const decodedToken = jwt.verify(getTokenFrom(request),process.env.SECRET)
+  if(!(decodedToken.id)) {
+    return response.status(401).json({
+      error:'invalid token'
+    })
+  }
   const body = request.body
+  const user = await User.findById(decodedToken.id)
   const note = new Note({
     content:body.content,
-    important:body.important||false
+    important:body.important||false,
+    user:user.id
   })
-  // try{
+
   const savedNote = await note.save()
+  console.log(savedNote)
+  user.notes = user.notes.concat(savedNote._id)
+  await user.save()
   response.status(201).json(savedNote)
   // } catch(exception) {
   // next(exception)

@@ -2,17 +2,35 @@ GET  http://localhost:3001/api/notes
 
 ###
 
+POST http://localhost:3001/api/users
+Content-Type: application/json
+{
+    "username":"root",
+    "name":"root",
+    "password":"root"
+}
+
+###
+GET http://localhost:3001/api/users
+
+###
+GET http://localhost:3001/api/notes/65098a39ee846e032021a7e2
+
+###
+
 POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content":"test",
+    "content":"testeee",
     "important":true
 }
 
 ###
 
-POST http://localhost:3001/api/persons
+DELETE http://localhost:3001/api/notes/650ab0c1c2c70ff4bbb65205
+
+POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
